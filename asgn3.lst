@@ -1,0 +1,45 @@
+SQL> start assignment3.sql
+
+SELECT Type, sum(Amount) FROM Expense GROUP BY Type ORDER BY sum(Amount);
+
+TY SUM(AMOUNT)                                                                  
+-- -----------                                                                  
+H           50                                                                  
+T          200                                                                  
+
+SELECT Dept.Name, count(Trip.ID) FROM Employee, Trip, Dept WHERE Employee.ID = Trip.Emp_ID AND Employee.Dept = Dept.Code GROUP BY Dept.Name;
+
+NAME       COUNT(TRIP.ID)                                                       
+---------- --------------                                                       
+Spants                 10                                                       
+
+
+SELECT count(*) FROM Trip WHERE Dep_Date = Return_Date;
+
+  COUNT(*)                                                                      
+----------                                                                      
+         0                                                                      
+
+select name, dep_date, to_city, Submitted from employee, trip, expense where employee.id = trip.emp_id and trip.id = expense.trip_id;
+
+NAME            DEP_DATE  TO_CITY         SUBMITTED                             
+--------------- --------- --------------- ---------                             
+Jerry           09-FEB-18 Chernobyl       09-FEB-18                             
+Jerry           09-FEB-18 Chernobyl       09-FEB-18                             
+Larry           09-FEB-18 Chernobyl       09-FEB-18                             
+Larry           09-FEB-18 Chernobyl       09-FEB-18                             
+Berry           09-FEB-18 Chernobyl       09-FEB-18                             
+Berry           09-FEB-18 Chernobyl       09-FEB-18                             
+Berry           09-FEB-18 Chernobyl       09-FEB-18                             
+Berry           09-FEB-18 Chernobyl       09-FEB-18                             
+Garry           09-FEB-18 Chernobyl       09-FEB-18                             
+Garry           09-FEB-18 Chernobyl       09-FEB-18                             
+Harry           09-FEB-18 Chernobyl       03-MAR-18                             
+
+11 rows selected.
+
+select trip_id, total, est_cost from trip, (select trip_id, sum(amount) as total from expense group by trip_id) where total > est_cost;
+
+no rows selected
+
+SQL> spool off

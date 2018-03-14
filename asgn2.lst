@@ -1,0 +1,45 @@
+SQL> start Assignment2.sql;
+
+SQL> SELECT COUNT(*) FROM Trip WHERE Emp_ID IN (SELECT ID FROM Employee WHERE Dept = 'Marketing');
+  COUNT(*)                                                                      
+----------                                                                      
+         0                                                                      
+
+SQL> SELECT DISTINCT Name FROM Employee WHERE ID IN (SELECT Emp_ID FROM Trip WHERE ID NOT IN (SELECT Trip_ID FROM Expense));
+NAME                                                                            
+---------------                                                                 
+Tarry                                                                           
+Carrie                                                                          
+Terry                                                                           
+Scarry                                                                          
+Harry                                                                           
+Perry                                                                           
+
+6 rows selected.
+
+SQL> SELECT Contact FROM Dept WHERE Code IN (SELECT Dept FROM Employee WHERE ID IN (SELECT Emp_ID from Trip WHERE Est_Cost IN (SELECT Max(Est_Cost) FROM Trip)));
+CONTACT                                                                         
+---------------                                                                 
+Jerry                                                                           
+
+SQL> SELECT Name FROM Dept WHERE Code NOT IN (SELECT Dept FROM Employee WHERE ID IN (SELECT Emp_ID FROM Trip));
+NAME                                                                            
+----------                                                                      
+Cramps                                                                          
+Shants                                                                          
+Wants                                                                           
+Lamps                                                                           
+Sands                                                                           
+Damps                                                                           
+Pants                                                                           
+Rants                                                                           
+Lance                                                                           
+
+9 rows selected.
+
+SQL> SELECT DISTINCT To_City FROM Trip WHERE Est_Cost = (SELECT Avg(Est_Cost) FROM Trip);
+TO_CITY                                                                         
+---------------                                                                 
+Chernobyl                                                                       
+
+SQL> spool off

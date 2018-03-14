@@ -1,0 +1,86 @@
+SQL> Select * from cat;
+
+TABLE_NAME   TABLE_TYPE                                                         
+------------ -----------                                                        
+DEPT         TABLE                                                              
+EMPLOYEE     TABLE                                                              
+EXPENSE      TABLE                                                              
+TRIP         TABLE                                                              
+
+SQL> desc Employee
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                        NOT NULL NUMBER(38)
+ NAME                                      NOT NULL CHAR(15)
+ DEPT                                      NOT NULL CHAR(5)
+ JOIN_DATE                                          DATE
+
+SQL> desc Dept
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CODE                                      NOT NULL CHAR(5)
+ NAME                                      NOT NULL CHAR(10)
+ PHONE                                     NOT NULL CHAR(8)
+ CONTACT                                            CHAR(15)
+
+SQL> desc Trip
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                        NOT NULL NUMBER(38)
+ EMP_ID                                             NUMBER(38)
+ TO_CITY                                            CHAR(15)
+ DEP_DATE                                  NOT NULL DATE
+ RETURN_DATE                               NOT NULL DATE
+ EST_COST                                  NOT NULL NUMBER(6,2)
+
+SQL> desc Expense
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ TRIP_ID                                   NOT NULL NUMBER(38)
+ RECEIPT_NO                                NOT NULL NUMBER(38)
+ AMOUNT                                    NOT NULL NUMBER(6,2)
+ TYPE                                               CHAR(2)
+ SUBMITTED                                          DATE
+
+SQL> select a.owner, a.table_name, column_name primary_key,  a.constraint_name
+  2        from   user_cons_columns a, user_constraints b
+  3        where  a.constraint_name = b.constraint_name and constraint_type = 'P';
+
+OWNER        TABLE_NAME   PRIMARY_KEY  CONSTRAINT_NAME                          
+------------ ------------ ------------ ------------------------------           
+DBCLASS10    DEPT         CODE         SYS_C0012038                             
+DBCLASS10    EMPLOYEE     ID           SYS_C0012035                             
+DBCLASS10    EXPENSE      TRIP_ID      SYS_C0012074                             
+DBCLASS10    EXPENSE      RECEIPT_NO   SYS_C0012074                             
+DBCLASS10    TRIP         ID           SYS_C0012051                             
+
+SQL> select a.owner, a.table_name, a.column_name foreign_key,
+  2               b.table_name Referring_table, b.column_name Primary_key
+  3        from   user_cons_columns a, user_cons_columns b, user_constraints c
+  4        where  a.constraint_name = c.constraint_name and c.r_constraint_name = b.constraint_name;
+
+OWNER        TABLE_NAME   FOREIGN_KEY  REFERRING_TABLE PRIMARY_KEY              
+------------ ------------ ------------ --------------- ------------             
+DBCLASS10    EMPLOYEE     DEPT         DEPT            CODE                     
+DBCLASS10    EXPENSE      TRIP_ID      TRIP            ID                       
+
+SQL> select owner, table_name, search_condition from
+  2               user_constraints where search_condition is not null;
+
+OWNER        TABLE_NAME   SEARCH_CONDITION                                      
+------------ ------------ ---------------------------------------------         
+DBCLASS10    EXPENSE      Type in ('T', 'H', 'M')                               
+DBCLASS10    EXPENSE      Amount >= 1                                           
+DBCLASS10    EXPENSE      "AMOUNT" IS NOT NULL                                  
+DBCLASS10    TRIP         Est_Cost between 1 and 4000                           
+DBCLASS10    TRIP         "EST_COST" IS NOT NULL                                
+DBCLASS10    TRIP         "RETURN_DATE" IS NOT NULL                             
+DBCLASS10    TRIP         "DEP_DATE" IS NOT NULL                                
+DBCLASS10    DEPT         "PHONE" IS NOT NULL                                   
+DBCLASS10    DEPT         "NAME" IS NOT NULL                                    
+DBCLASS10    EMPLOYEE     "DEPT" IS NOT NULL                                    
+DBCLASS10    EMPLOYEE     "NAME" IS NOT NULL                                    
+
+11 rows selected.
+
+SQL> spool off
